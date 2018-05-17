@@ -1,12 +1,20 @@
 package com.example.riceyrq.thenextday.Activity;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -14,16 +22,18 @@ import com.example.riceyrq.thenextday.Data.LunarDate;
 import com.example.riceyrq.thenextday.Data.SolarDate;
 import com.example.riceyrq.thenextday.Data.YMD;
 import com.example.riceyrq.thenextday.R;
+import com.example.riceyrq.thenextday.Util.BitUtil;
 import com.example.riceyrq.thenextday.Util.DataUtil;
 import com.example.riceyrq.thenextday.Util.ToastUtil;
 
 import java.util.Calendar;
 
-public class Main extends AppCompatActivity {
+public class Main extends Activity {
     private Spinner yearChos;
     private Spinner monthChos;
     private Spinner dayChos;
     private TextView nextDay;
+    private LinearLayout linearLayout;
     private Button start;
     private ArrayAdapter<Integer> yearAdapter;
     private ArrayAdapter<Integer> monthAdapter;
@@ -33,15 +43,33 @@ public class Main extends AppCompatActivity {
     private int day = 0;
     private int dayOfWeek = 0;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){//4.4 全透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
+        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0 全透明实现
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.rgb(170, 125, 96));
+        }*/
+
         yearChos = (Spinner) findViewById(R.id.year);
         monthChos = (Spinner) findViewById(R.id.month);
         dayChos = (Spinner) findViewById(R.id.day);
         nextDay = (TextView) findViewById(R.id.next);
         start = (Button) findViewById(R.id.start);
+        linearLayout = (LinearLayout) findViewById(R.id.whole_bac);
+        linearLayout.setBackground(new BitmapDrawable(BitUtil.getBit(getApplicationContext(), R.drawable.bac)));
+        //linearLayout.getBackground().setAlpha(200);
 
         yearAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, DataUtil.getYears());
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -139,6 +167,15 @@ public class Main extends AppCompatActivity {
                     String nextLunarHoliday = DataUtil.getLunarHoliday(next);
                     String nextWeekHoliday = DataUtil.getWeekHoliday(next);
                     nextDay.setText(nextSolar + "\r\n" + nextLunar + "\r\n" + nextSolarHoliday + " " + nextLunarHoliday + " " + nextWeekHoliday);
+                    if (YMD.holidayBacMap.get(nextSolarHoliday) != null){
+                        linearLayout.setBackground(new BitmapDrawable(BitUtil.getBit(getApplicationContext(), (Integer) YMD.holidayBacMap.get(nextSolarHoliday))));
+                    } else if (YMD.holidayBacMap.get(nextLunarHoliday) != null){
+                        linearLayout.setBackground(new BitmapDrawable(BitUtil.getBit(getApplicationContext(), (Integer) YMD.holidayBacMap.get(nextLunarHoliday))));
+                    }  else if (YMD.holidayBacMap.get(nextWeekHoliday) != null){
+                        linearLayout.setBackground(new BitmapDrawable(BitUtil.getBit(getApplicationContext(), (Integer) YMD.holidayBacMap.get(nextWeekHoliday))));
+                    } else {
+                        linearLayout.setBackground(new BitmapDrawable(BitUtil.getBit(getApplicationContext(), R.drawable.bac)));
+                    }
                 } else {
                     ToastUtil.showToast(getApplication(), "请输入完整的日期再点击确认！");
                 }

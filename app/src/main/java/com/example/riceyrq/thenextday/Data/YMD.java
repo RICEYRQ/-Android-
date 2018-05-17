@@ -1,6 +1,30 @@
 package com.example.riceyrq.thenextday.Data;
 
+import com.example.riceyrq.thenextday.R;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class YMD {
+    public final static Map holidayBacMap = new HashMap(){
+        {
+            put("情人节", R.drawable.bac2_14);
+            put("520", R.drawable.bac5_20);
+            put("国际儿童节", R.drawable.bac6_1);
+            put("端午节", R.drawable.bac_duanwu);
+            put("清明节", R.drawable.bac_qingming);
+            put("中秋节", R.drawable.bac_zhongqiu);
+            put("母亲节", R.drawable.bac_muqinjie);
+            put("父亲节", R.drawable.bac_fuqinjie);
+            put("国庆节 国际音乐日", R.drawable.bac_10_1);
+            put("元宵节", R.drawable.bac_yuanxiao);
+            put("春节", R.drawable.bac_chunjie);
+            put("元旦", R.drawable.bac_1_1);
+            put("植树节 孙中山逝世纪念日", R.drawable.bac_3_12);
+            put("圣诞节", R.drawable.bac_12_25);
+            put("劳动节", R.drawable.bac_5_1);
+        }
+    };
     public final static String[] Gan = new String[] { "甲", "乙", "丙", "丁", "戊",
                         "己", "庚", "辛", "壬", "癸" };
     public final static String[] Zhi = new String[] { "子", "丑", "寅", "卯", "辰",
@@ -79,13 +103,15 @@ public class YMD {
             new SolarHoliday(3, 21,"世界森林日 消除种族歧视国际日 世界儿歌日"),
             new SolarHoliday(3, 22,"世界水日"),
             new SolarHoliday(3, 24,"世界防治结核病日"),
-            new SolarHoliday(4, 1,"愚人节"),
+            new SolarHoliday(4, 1, "愚人节"),
+            new SolarHoliday(4, 5, "清明节"),
             new SolarHoliday(4, 7,"世界卫生日"),
             new SolarHoliday(4, 22,"世界地球日"),
             new SolarHoliday(5, 1,"劳动节"),
             new SolarHoliday(5, 4,"青年节"),
             new SolarHoliday(5, 8, "世界红十字日"),
             new SolarHoliday(5, 12, "国际护士节"),
+            new SolarHoliday(5, 20, "520"),
             new SolarHoliday(5, 31, "世界无烟日"),
             new SolarHoliday(6, 1, "国际儿童节"),
             new SolarHoliday(6, 5, "世界环境保护日"),

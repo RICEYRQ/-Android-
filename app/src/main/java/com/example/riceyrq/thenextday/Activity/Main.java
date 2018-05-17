@@ -156,10 +156,16 @@ public class Main extends AppCompatActivity {
                 dayAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, DataUtil.getDaysSpecial(month));
                 dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 dayChos.setAdapter(dayAdapter);
+                if(day > YMD.daysSpecial[month - 1]){
+                    day = YMD.daysSpecial[month - 1];
+                }
             } else {
                 dayAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, DataUtil.getDaysNormal(month));
                 dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 dayChos.setAdapter(dayAdapter);
+                if(day > YMD.daysNormal[month - 1]){
+                    day = YMD.daysNormal[month - 1];
+                }
             }
             dayChos.setEnabled(true);
             yearChos.setSelection(year - 1900);
